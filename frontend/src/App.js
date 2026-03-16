@@ -6,8 +6,6 @@ const InvitacionLuciano = () => {
   const [nombre, setNombre] = useState("");
   const [mostrarContenido, setMostrarContenido] = useState(false);
   const [countdown, setCountdown] = useState({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
-  const [mostrarVideo, setMostrarVideo] = useState(false);
-  const [videoUrl, setVideoUrl] = useState("");
   const canvasRef = useRef(null);
   const particulasRef = useRef([]);
   const animationRef = useRef(null);
@@ -184,13 +182,8 @@ const InvitacionLuciano = () => {
   };
 
   const whatsappLink = `https://wa.me/50687388936?text=${encodeURIComponent(`¡Hola! Soy ${nombre || 'invitado'} y confirmo mi asistencia al cumpleaños de Luciano 🎉`)}`;
-  const mapsLink = "https://maps.google.com/?q=Salón+comunal+Zapote+Quesada+Durán";
-
-  const handleVideoSubmit = () => {
-    if (videoUrl.trim()) {
-      setMostrarVideo(false);
-    }
-  };
+  const wazeLink = "https://waze.com/ul/hd1u0rjwb5";
+  const videoYoutube = "https://www.youtube.com/embed/-pXhM3GRubY";
 
   return (
     <div className="invitacion-container" data-testid="invitacion-container" style={{backgroundImage: `url(${fondoCars})`}}>
@@ -292,61 +285,27 @@ const InvitacionLuciano = () => {
                 </a>
                 <a 
                   data-testid="btn-ubicacion"
-                  href={mapsLink}
+                  href={wazeLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="boton boton-ubicacion"
                 >
-                  📍 Ver ubicación
+                  🗺️ Ver ubicación en Waze
                 </a>
-                <button 
-                  data-testid="btn-video"
-                  onClick={() => setMostrarVideo(true)}
-                  className="boton boton-video"
-                >
-                  🎬 Agregar Video
-                </button>
               </div>
 
-              {/* Modal de Video */}
-              {mostrarVideo && (
-                <div className="modal-overlay" data-testid="modal-video">
-                  <div className="modal-video">
-                    <h3>🎬 Agregar Video de YouTube</h3>
-                    <input 
-                      type="text"
-                      placeholder="Pega el enlace de YouTube aquí"
-                      value={videoUrl}
-                      onChange={(e) => setVideoUrl(e.target.value)}
-                      className="input-video"
-                      data-testid="input-video-url"
-                    />
-                    <div className="modal-buttons">
-                      <button onClick={handleVideoSubmit} className="btn-modal btn-guardar">
-                        Guardar
-                      </button>
-                      <button onClick={() => setMostrarVideo(false)} className="btn-modal btn-cancelar">
-                        Cancelar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Mostrar video si existe */}
-              {videoUrl && (
-                <div className="video-container" data-testid="video-container">
-                  <iframe
-                    width="100%"
-                    height="250"
-                    src={videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}
-                    title="Video de cumpleaños"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              )}
+              {/* Video de YouTube */}
+              <div className="video-container" data-testid="video-container">
+                <iframe
+                  width="100%"
+                  height="280"
+                  src={videoYoutube}
+                  title="Video de cumpleaños de Luciano"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
               <div className="luciano-img-container">
                 <div className="globos">
