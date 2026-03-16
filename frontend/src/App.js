@@ -6,9 +6,15 @@ const InvitacionLuciano = () => {
   const [nombre, setNombre] = useState("");
   const [mostrarContenido, setMostrarContenido] = useState(false);
   const [countdown, setCountdown] = useState({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
+  const [mostrarVideo, setMostrarVideo] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
   const canvasRef = useRef(null);
   const particulasRef = useRef([]);
   const animationRef = useRef(null);
+  
+  // URLs de las imágenes
+  const fondoCars = "https://customer-assets.emergentagent.com/job_luciano-2nd-bday/artifacts/0x8mdnkr_IMG_2556.jpeg";
+  const sobreElegante = "https://customer-assets.emergentagent.com/job_luciano-2nd-bday/artifacts/3h5jxsuk_4C2A83BF-E370-48EE-B658-DA1AF3F9D02B.png";
 
   // Countdown timer
   useEffect(() => {
@@ -180,21 +186,24 @@ const InvitacionLuciano = () => {
   const whatsappLink = `https://wa.me/50687388936?text=${encodeURIComponent(`¡Hola! Soy ${nombre || 'invitado'} y confirmo mi asistencia al cumpleaños de Luciano 🎉`)}`;
   const mapsLink = "https://maps.google.com/?q=Salón+comunal+Zapote+Quesada+Durán";
 
+  const handleVideoSubmit = () => {
+    if (videoUrl.trim()) {
+      setMostrarVideo(false);
+    }
+  };
+
   return (
-    <div className="invitacion-container" data-testid="invitacion-container">
+    <div className="invitacion-container" data-testid="invitacion-container" style={{backgroundImage: `url(${fondoCars})`}}>
+      <div className="overlay-fondo"></div>
       <canvas ref={canvasRef} className="canvas-fuegos" data-testid="canvas-fuegos" />
-      
-      {/* Estrellas de fondo */}
-      <div className="estrellas"></div>
-      <div className="estrellas2"></div>
       
       {!mostrarPanel && (
         <div className="sobre-container" data-testid="sobre-container">
           <h1 className="titulo-principal">¡Estás Invitado!</h1>
           <img 
             data-testid="sobre-img"
-            className="sobre-img" 
-            src="https://cdn-icons-png.flaticon.com/512/561/561127.png" 
+            className="sobre-img sobre-elegante" 
+            src={sobreElegante}
             alt="Sobre de invitación"
             onClick={abrirSobre}
           />
@@ -290,7 +299,54 @@ const InvitacionLuciano = () => {
                 >
                   📍 Ver ubicación
                 </a>
+                <button 
+                  data-testid="btn-video"
+                  onClick={() => setMostrarVideo(true)}
+                  className="boton boton-video"
+                >
+                  🎬 Agregar Video
+                </button>
               </div>
+
+              {/* Modal de Video */}
+              {mostrarVideo && (
+                <div className="modal-overlay" data-testid="modal-video">
+                  <div className="modal-video">
+                    <h3>🎬 Agregar Video de YouTube</h3>
+                    <input 
+                      type="text"
+                      placeholder="Pega el enlace de YouTube aquí"
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                      className="input-video"
+                      data-testid="input-video-url"
+                    />
+                    <div className="modal-buttons">
+                      <button onClick={handleVideoSubmit} className="btn-modal btn-guardar">
+                        Guardar
+                      </button>
+                      <button onClick={() => setMostrarVideo(false)} className="btn-modal btn-cancelar">
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Mostrar video si existe */}
+              {videoUrl && (
+                <div className="video-container" data-testid="video-container">
+                  <iframe
+                    width="100%"
+                    height="250"
+                    src={videoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")}
+                    title="Video de cumpleaños"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
 
               <div className="luciano-img-container">
                 <div className="globos">
